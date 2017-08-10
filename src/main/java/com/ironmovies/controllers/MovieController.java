@@ -16,15 +16,36 @@ public class MovieController {
     List<Movie> movies = new ArrayList();
     static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
 
+    @GetMapping("/")
+    public String home() {
+        return "This is a Movie REST API. Try: /api/...";
+    }
 
-    @GetMapping(path ="/api/test")
+    @GetMapping("/api/sample")
+    public String apiHome() {
+        return "";
+    }
+
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping(path = "/api/fail-cors")
+    public Object singleMovieFailTest(String route) {
+        RestTemplate testTemplate = new RestTemplate();
+        ResultsPage resultsPage = testTemplate.getForObject(API_URL, ResultsPage.class);
+        return resultsPage.getResults().stream()
+                .filter(e -> e.getTitle()
+                        .contains("Spider-Man: Homecoming"))
+                .collect(Collectors.toList());
+    }
+
+    @CrossOrigin(origins = "http://www.unrentedforest.surge.sh")
+    @GetMapping(path = "/api/spiderman-homecoming")
     public Object singleMovieTest(String route) {
         RestTemplate testTemplate = new RestTemplate();
         ResultsPage resultsPage = testTemplate.getForObject(API_URL, ResultsPage.class);
         return resultsPage.getResults().stream()
-                .filter(e->e.getTitle()
+                .filter(e -> e.getTitle()
                         .contains("Spider-Man: Homecoming"))
-                        .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     @GetMapping(path = "/api/movies")
@@ -33,7 +54,6 @@ public class MovieController {
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
         return resultsPage;
-
 
 
 //

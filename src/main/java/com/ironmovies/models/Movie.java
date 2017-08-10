@@ -3,8 +3,10 @@ package com.ironmovies.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Movie {
+public class Movie implements Serializable{
     private String title;
 
     @JsonProperty("poster_path")
